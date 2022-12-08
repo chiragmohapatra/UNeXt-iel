@@ -10,6 +10,7 @@ import torch.nn as nn
 import torch.optim as optim
 import yaml
 from albumentations.augmentations import transforms
+import albumentations.augmentations.geometric.transforms as geo_transforms
 from albumentations.core.composition import Compose, OneOf
 from sklearn.model_selection import train_test_split
 from torch.optim import lr_scheduler
@@ -254,8 +255,7 @@ def main():
     val_img_ids = [os.path.splitext(os.path.basename(p))[0] for p in val_img_ids]
 
     train_transform = Compose([
-        RandomRotate90(),
-        transforms.Flip(),
+        geo_transforms.Flip(),
         Resize(config['input_h'], config['input_w']),
         transforms.Normalize(),
     ])
