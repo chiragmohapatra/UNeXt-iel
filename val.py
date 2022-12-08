@@ -52,10 +52,8 @@ def main():
     model = model.cuda()
 
     # Data loading code
-    img_ids = glob(os.path.join('inputs', config['dataset'], 'images', '*' + config['img_ext']))
-    img_ids = [os.path.splitext(os.path.basename(p))[0] for p in img_ids]
-
-    _, val_img_ids = train_test_split(img_ids, test_size=0.2, random_state=41)
+    test_img_ids = glob(os.path.join(config['dataset'],'test', 'images', '*' + config['img_ext']))
+    test_img_ids = [os.path.splitext(os.path.basename(p))[0] for p in test_img_ids]
 
     model.load_state_dict(torch.load('models/%s/model.pth' %
                                      config['name']))
@@ -67,9 +65,9 @@ def main():
     ])
 
     val_dataset = Dataset(
-        img_ids=val_img_ids,
-        img_dir=os.path.join('inputs', config['dataset'], 'images'),
-        mask_dir=os.path.join('inputs', config['dataset'], 'masks'),
+        img_ids=test_img_ids,
+        img_dir=os.path.join(config['dataset'],'test', 'images'),
+        mask_dir=os.path.join(config['dataset'],'test', 'masks'),
         img_ext=config['img_ext'],
         mask_ext=config['mask_ext'],
         num_classes=config['num_classes'],
