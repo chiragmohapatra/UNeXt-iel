@@ -25,6 +25,7 @@ def parse_args():
 
     parser.add_argument('--name', default=None,
                         help='model name')
+    parser.add_argument('--data', default='test')
 
     args = parser.parse_args()
 
@@ -52,7 +53,7 @@ def main():
     model = model.cuda()
 
     # Data loading code
-    test_img_ids = glob(os.path.join(config['dataset'],'test', 'images', '*' + config['img_ext']))
+    test_img_ids = glob(os.path.join(config['dataset'],args.data, 'images', '*' + config['img_ext']))
     test_img_ids = [os.path.splitext(os.path.basename(p))[0] for p in test_img_ids]
 
     model.load_state_dict(torch.load('models/%s/model.pth' %
@@ -66,8 +67,8 @@ def main():
 
     val_dataset = Dataset(
         img_ids=test_img_ids,
-        img_dir=os.path.join(config['dataset'],'test', 'images'),
-        mask_dir=os.path.join(config['dataset'],'test', 'masks'),
+        img_dir=os.path.join(config['dataset'], args.data, 'images'),
+        mask_dir=os.path.join(config['dataset'],args.data, 'masks'),
         img_ext=config['img_ext'],
         mask_ext=config['mask_ext'],
         num_classes=config['num_classes'],
